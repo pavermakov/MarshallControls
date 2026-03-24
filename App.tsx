@@ -1,45 +1,39 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+// App.tsx
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React from 'react';
+import { useDeviceConnection } from './src/bluetooth/hooks/useDeviceConnection';
+import { ConnectScreen } from './src/screens/ConnectScreen';
+import { HeadphonesScreen } from './src/screens/HeadphonesScreen';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const {
+    device,
+    connectionState,
+    scanStatus,
+    reconnectCount,
+    connect,
+    disconnect,
+    reset,
+  } = useDeviceConnection();
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
+  if (connectionState === 'connected' && device) {
+    return (
+      <HeadphonesScreen
+        device={device}
+        onDisconnect={disconnect}
       />
-    </View>
-  );
-}
+    );
+  }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+  return (
+    <ConnectScreen
+      onConnect={connect}
+      connectionState={connectionState}
+      scanStatus={scanStatus}
+      reconnectCount={reconnectCount}
+      onReset={reset}
+    />
+  );
+};
 
 export default App;
