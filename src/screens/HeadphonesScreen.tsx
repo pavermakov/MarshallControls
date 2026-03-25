@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { View, Text, Pressable, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Device } from "app/bluetooth/BleManager";
-import useANCControl from "app/bluetooth/hooks/useANCControl";
-import ModeCard from "app/components/ModeCard";
-import { ANCMode } from "app/types";
+import { Device } from "src/bluetooth/BleManager";
+import useANCControl from "src/bluetooth/hooks/useANCControl";
+import ModeCard from "src/components/ModeCard";
+import { ANCMode } from "src/types";
 
 const MODES: { mode: ANCMode; label: string; description: string }[] = [
   { mode: ANCMode.NoiseCancelling, label: 'Noise Cancel', description: 'Ambient sound blocked' },

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { encode, decode } from "base-64";
-import { Device } from "app/bluetooth/BleManager";
-import { ANCMode } from "app/types";
-import { ANC_COMMANDS, BYTE_TO_ANC_MODE, MARSHALL_SERVICE_UUID, MARSHALL_ANC_CHAR_UUID } from "app/bluetooth/MarshallProtocol";
+import { Device } from "src/bluetooth/BleManager";
+import { ANCMode } from "src/types";
+import { ANC_COMMANDS, BYTE_TO_ANC_MODE, MARSHALL_SERVICE_UUID, MARSHALL_ANC_CHAR_UUID } from "src/bluetooth/MarshallProtocol";
 
 const useANCControl = (device: Device | null) => {
     const [currentMode, setCurrentMode] = useState<ANCMode>(ANCMode.Off);
