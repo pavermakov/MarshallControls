@@ -1,45 +1,42 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { Appearance } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import useDeviceConnection from 'app/bluetooth/hooks/useDeviceConnection';
+import ConnectScreen from 'app/screens/ConnectScreen';
+import HeadphonesScreen from 'app/screens/HeadphonesScreen';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+Appearance.setColorScheme('light');
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+    const {
+        device,
+        connectionState,
+        scanStatus,
+        reconnectCount,
+        connect,
+        disconnect,
+        reset,
+        listDevices
+    } = useDeviceConnection();
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+    return (
+        <SafeAreaProvider>
+            {connectionState === 'connected' && device != null
+                ?
+                    <HeadphonesScreen
+                        device={device}
+                        onDisconnect={disconnect}
+                    />
+                :
+                    <ConnectScreen
+                        connectionState={connectionState}
+                        reconnectCount={reconnectCount}
+                        scanStatus={scanStatus}
+                        onConnect={connect}
+                        onReset={reset}
+                    />
+            }
+        </SafeAreaProvider>
+    );
+};
 
 export default App;
