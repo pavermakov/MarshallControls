@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ConnectionState, ScanStatus } from "app/types";
-import { SCAN_STATUS_LABELS } from "app/bluetooth/DeviceScanner";
+import { ConnectionState, ScanStatus } from "src/types";
+import { SCAN_STATUS_LABELS } from "src/bluetooth/DeviceScanner";
 
 interface Props {                                                                                   
     connectionState: ConnectionState;                                                                 

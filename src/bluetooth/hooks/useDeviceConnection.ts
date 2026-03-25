@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import BleManager, { Device, Subscription } from "app/bluetooth/BleManager";
-import { ConnectionState, ScanStatus } from "app/types";
-import { disconnectDevice, scanAndConnectMarshall } from "app/bluetooth/DeviceScanner";
-import useAppState from "app/bluetooth/hooks/useAppState";
+import BleManager, { Device, Subscription } from "src/bluetooth/BleManager";
+import { ConnectionState, ScanStatus } from "src/types";
+import { disconnectDevice, scanAndConnectMarshall } from "src/bluetooth/DeviceScanner";
+import useAppState from "src/bluetooth/hooks/useAppState";
 import { MARSHALL_SERVICE_UUID } from "../MarshallProtocol";
 
 const RECONNECT_DELAY_MS = 3000;
@@ -146,10 +146,9 @@ const useDeviceConnection = () => {
         if (device) {
             try {
                 const d = await device.connect();
-                console.log(d.name);
                 setDevice(d)
             } catch (error) {
-                console.log(error)
+                // handle error
             }
         }
     };

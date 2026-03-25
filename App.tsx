@@ -1,8 +1,8 @@
 import { Appearance } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import useDeviceConnection from 'app/bluetooth/hooks/useDeviceConnection';
-import ConnectScreen from 'app/screens/ConnectScreen';
-import HeadphonesScreen from 'app/screens/HeadphonesScreen';
+import useDeviceConnection from 'src/bluetooth/hooks/useDeviceConnection';
+import ConnectScreen from 'src/screens/ConnectScreen';
+import HeadphonesScreen from 'src/screens/HeadphonesScreen';
 
 Appearance.setColorScheme('light');
 
@@ -14,8 +14,7 @@ const App = () => {
         reconnectCount,
         connect,
         disconnect,
-        reset,
-        listDevices
+        reset
     } = useDeviceConnection();
 
     return (

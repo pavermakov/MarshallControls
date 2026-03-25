@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { ANCMode } from "app/types";
+import { ANCMode } from "src/types";
 
 interface ModeCardProps {
     mode: ANCMode;
