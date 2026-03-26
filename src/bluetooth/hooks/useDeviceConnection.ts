@@ -1,14 +1,12 @@
-import { useState, useRef, useCallback, useEffect } from "react";
-import BleManager, { Device, Subscription } from "src/bluetooth/BleManager";
-import { ConnectionState, ScanStatus } from "src/types";
-import { disconnectDevice, scanAndConnectMarshall } from "src/bluetooth/DeviceScanner";
-import useAppState from "src/bluetooth/hooks/useAppState";
-import { MARSHALL_SERVICE_UUID } from "../MarshallProtocol";
+import { useState, useRef, useCallback, useEffect } from 'react';
+import BleManager, { Device, Subscription } from 'src/bluetooth/BleManager';
+import { disconnectDevice, scanAndConnectMarshall } from 'src/bluetooth/DeviceScanner';
+import useAppState from 'src/bluetooth/hooks/useAppState';
+import { MARSHALL_SERVICE_UUID } from 'src/bluetooth/MarshallProtocol';
+import { ConnectionState, ScanStatus, Timeout } from 'src/types';
 
 const RECONNECT_DELAY_MS = 3000;
 const MAX_RECONNECT_TRIES = 5;
-
-type Timeout = ReturnType<typeof setTimeout> | null
 
 const useDeviceConnection = () => {
     const [device, setDevice] = useState<Device | null>(null);
@@ -28,11 +26,11 @@ const useDeviceConnection = () => {
     useEffect(() => {
         isMounted.current = true;
         return () => {
-          isMounted.current = false;
-          clearReconnectTimer();
-          disconnectSub.current?.remove();
+            isMounted.current = false;
+            clearReconnectTimer();
+            disconnectSub.current?.remove();
         };
-      }, []);
+    }, []);
 
     const clearReconnectTimer = (): void => {
         if (reconnectTimer.current) {
@@ -53,7 +51,10 @@ const useDeviceConnection = () => {
         }
 
         clearReconnectTimer();
-        reconnectTimer.current = setTimeout(attemptReconnect, RECONNECT_DELAY_MS);
+        reconnectTimer.current = setTimeout(
+            attemptReconnect,
+            RECONNECT_DELAY_MS,
+        );
     };
 
     const attemptReconnect = async (): Promise<void> => {
@@ -72,7 +73,7 @@ const useDeviceConnection = () => {
             watchDisconnect(newDevice);
             setReconnectCount(0);
             setConnectionState('connected');
-        } catch(error) {
+        } catch (error) {
             isReconnecting.current = false;
             scheduleReconnect();
         }
@@ -81,16 +82,19 @@ const useDeviceConnection = () => {
     const watchDisconnect = (device: Device): void => {
         disconnectSub.current?.remove();
 
-        disconnectSub.current = BleManager.onDeviceDisconnected(device.id, () => {
-            if (!isMounted.current) {
-                return;
-            }
+        disconnectSub.current = BleManager.onDeviceDisconnected(
+            device.id,
+            () => {
+                if (!isMounted.current) {
+                    return;
+                }
 
-            setDevice(null);
-            isReconnecting.current = false;
-            setConnectionState('reconnecting');
-            scheduleReconnect();
-        });
+                setDevice(null);
+                isReconnecting.current = false;
+                setConnectionState('reconnecting');
+                scheduleReconnect();
+            },
+        );
     };
 
     const connect = useCallback(async (): Promise<void> => {
@@ -140,13 +144,15 @@ const useDeviceConnection = () => {
 
     // TODO: refactor
     const listDevices = async () => {
-        const connectedDevices = await BleManager.connectedDevices([MARSHALL_SERVICE_UUID]);
+        const connectedDevices = await BleManager.connectedDevices([
+            MARSHALL_SERVICE_UUID,
+        ]);
         const device: Device = connectedDevices[0];
 
         if (device) {
             try {
                 const d = await device.connect();
-                setDevice(d)
+                setDevice(d);
             } catch (error) {
                 // handle error
             }
@@ -161,7 +167,7 @@ const useDeviceConnection = () => {
         connect,
         disconnect,
         reset,
-        listDevices
+        listDevices,
     };
 };
 

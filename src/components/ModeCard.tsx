@@ -1,6 +1,7 @@
-import { useCallback } from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
-import { ANCMode } from "src/types";
+import { useCallback } from 'react';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { ANCMode } from 'src/types';
+import { MODE_ACCENT } from 'src/constants';
 
 interface ModeCardProps {
     mode: ANCMode;
@@ -11,24 +12,35 @@ interface ModeCardProps {
     onPress: (mode: ANCMode) => void;
 }
 
-const MODE_ACCENT: Record<ANCMode, string> = {
-    [ANCMode.NoiseCancelling]: '#F5A623',
-    [ANCMode.Transparency]: '#4FC3F7',
-    [ANCMode.Off]: '#555555',
-};
-
-const ModeCard = ({ mode, label, description, isActive, isLoading, onPress }: ModeCardProps) => {
+const ModeCard = ({
+    mode,
+    label,
+    description,
+    isActive,
+    isLoading,
+    onPress,
+}: ModeCardProps) => {
     const color = MODE_ACCENT[mode];
     const handlePress = useCallback(() => onPress(mode), [onPress, mode]);
 
     return (
         <Pressable
-            style={[styles.modeBtn, isActive && { borderColor: color, backgroundColor: color + '12' }]}
+            style={[
+                styles.modeBtn,
+                isActive && {
+                    borderColor: color,
+                    backgroundColor: color + '12',
+                },
+            ]}
             onPress={handlePress}
             disabled={isLoading}
         >
-            {isActive && <View style={[styles.activeDot, { backgroundColor: color }]} />}
-            <Text style={[styles.modeBtnLabel, isActive && { color }]}>{label}</Text>
+            {isActive && (
+                <View style={[styles.activeDot, { backgroundColor: color }]} />
+            )}
+            <Text style={[styles.modeBtnLabel, isActive && { color }]}>
+                {label}
+            </Text>
             <Text style={styles.modeBtnDesc}>{description}</Text>
         </Pressable>
     );
@@ -64,7 +76,7 @@ const styles = StyleSheet.create({
         fontSize: 9,
         color: '#333',
         textAlign: 'center',
-    }
+    },
 });
 
 export default ModeCard;
