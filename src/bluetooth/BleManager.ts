@@ -1,4 +1,4 @@
-import { BleManager, State, Device, Subscription } from 'react-native-ble-plx'
+import { BleManager, State, Device, Subscription } from 'react-native-ble-plx';
 
 const manager = new BleManager();
 

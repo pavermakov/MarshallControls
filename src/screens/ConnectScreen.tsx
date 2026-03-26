@@ -1,19 +1,36 @@
-import React from "react";
-import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ConnectionState, ScanStatus } from "src/types";
-import { SCAN_STATUS_LABELS } from "src/bluetooth/DeviceScanner";
+import React from 'react';
+import {
+    View,
+    Text,
+    Pressable,
+    ActivityIndicator,
+    StyleSheet,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ConnectionState, ScanStatus } from 'src/types';
+import { SCAN_STATUS_LABELS } from 'src/constants';
 
-interface Props {                                                                                   
-    connectionState: ConnectionState;                                                                 
-    scanStatus: ScanStatus;                                                                           
-    reconnectCount: number;                                                                           
+interface Props {
+    connectionState: ConnectionState;
+    scanStatus: ScanStatus;
+    reconnectCount: number;
     onConnect: () => void;
-    onReset: () => void;                                                                              
-}; 
+    onReset: () => void;
+}
 
-const ConnectScreen = ({ connectionState, reconnectCount, scanStatus, onConnect, onReset }: Props) => {
-    const isLoading = ['scanning', 'connecting', 'discovering', 'reconnecting'].includes(connectionState);
+const ConnectScreen = ({
+    connectionState,
+    reconnectCount,
+    scanStatus,
+    onConnect,
+    onReset,
+}: Props) => {
+    const isLoading = [
+        'scanning',
+        'connecting',
+        'discovering',
+        'reconnecting',
+    ].includes(connectionState);
     const isReconnecting = connectionState === 'reconnecting';
     const isFailed = connectionState === 'failed';
     const scanStatusLabel = SCAN_STATUS_LABELS[scanStatus];
@@ -42,16 +59,24 @@ const ConnectScreen = ({ connectionState, reconnectCount, scanStatus, onConnect,
 
                 {!isLoading && !isFailed && (
                     <Pressable
-                        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                        style={({ pressed }) => [
+                            styles.button,
+                            pressed && styles.buttonPressed,
+                        ]}
                         onPress={onConnect}
                     >
-                        <Text style={styles.buttonText}>Connect Headphones</Text>
+                        <Text style={styles.buttonText}>
+                            Connect Headphones
+                        </Text>
                     </Pressable>
                 )}
 
                 {isFailed && (
                     <Pressable
-                        style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+                        style={({ pressed }) => [
+                            styles.button,
+                            pressed && styles.buttonPressed,
+                        ]}
                         onPress={onReset}
                     >
                         <Text style={styles.buttonText}>Try Again</Text>
@@ -61,7 +86,6 @@ const ConnectScreen = ({ connectionState, reconnectCount, scanStatus, onConnect,
                 <Text style={styles.hint}>
                     Make sure your Marshall Motif A.N.C. is turned on and nearby
                 </Text>
-
             </View>
         </SafeAreaView>
     );
